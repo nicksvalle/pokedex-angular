@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Pokedex } from '../pokedex';
 import { PokedexService } from '../pokedex.service';
+import { Pokedex, Results } from '../pokedex';
 
 @Component({
   selector: 'app-pokedex',
@@ -8,26 +8,19 @@ import { PokedexService } from '../pokedex.service';
   styleUrls: ['./pokedex.component.css']
 })
 export class PokedexComponent implements OnInit {
-  pokedex : Pokedex = {} as Pokedex;
+  pokedex: { results: Results[] } = { results: [] };
 
-  constructor(private service : PokedexService){}
+  constructor(private pokedexService: PokedexService) { }
 
   ngOnInit(): void {
-    this.pokedex.front_default = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png"
+    this.loadPokedex();
   }
 
-  loadPokedex(){
-    this.service.getPokedex().subscribe(
-      {
-        next : data => this.pokedex = data
+  loadPokedex() {
+    this.pokedexService.getPokedex().subscribe(
+      (data: Pokedex) => {
+        this.pokedex = data;
       }
-      
     );
-  }
-  
-  getBreed(): string[] {
-    const parts = this.pokedex.front_default.split('/');
-    const pokemonId = parts[parts.length - 1].split('.')[0];
-    return [pokemonId];
   }
 }

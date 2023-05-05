@@ -1,11 +1,10 @@
-<div class="mt-3">
-    <img [src]="pokedex.front_default" alt="" width="300px" class="shadow-lg rounded">
-    <div class="display-6">
-      <span *ngFor="let name of getBreed()">
-        {{name}}
-      </span>
-    </div>
-    <div class="btn btn-dark">
-      Próximo
-    </div>
+<div ngIf="pokedex && pokedex.results">
+  <h1>Lista de Pokémon</h1>
+  <ul>
+    <li *ngFor= "let pokemon of pokedex.results">
+      <img [src]= "pokemon.front_default" alt="Imagem do {{ pokemon.name }}">
+      <span>{{ pokemon.id }}</span>
+      <span>{{ pokemon.name }}</span>
+    </li>
+  </ul>
 </div>

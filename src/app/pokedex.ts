@@ -1,4 +1,12 @@
+export interface Results {
+  name: string;
+  url: string;
+}
+
 export interface Pokedex {
-  front_default : string;
-  status : string;
+  front_default: string;
+  count: number;
+  next: string;
+  previous: string;
+  results: Results[];
 }
