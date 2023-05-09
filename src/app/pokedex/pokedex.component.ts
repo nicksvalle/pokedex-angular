@@ -1,26 +1,61 @@
-import { Component, OnInit } from '@angular/core';
-import { PokedexService } from '../pokedex.service';
-import { Pokedex, Results } from '../pokedex';
+import { Component } from '@angular/core';
+import { Pokedex } from '../pokedex.service';
 
 @Component({
   selector: 'app-pokedex',
   templateUrl: './pokedex.component.html',
-  styleUrls: ['./pokedex.component.css']
+  styleUrls: ['./pokedex.component.css'],
 })
-export class PokedexComponent implements OnInit {
-  pokedex: { results: Results[] } = { results: [] };
+export class PokedexComponent {
+  pokemon: any = {} as Pokedex;
 
-  constructor(private pokedexService: PokedexService) { }
+  constructor(private service: Pokedex) {}
 
   ngOnInit(): void {
-    this.loadPokedex();
+    this.loadPokemon();
   }
 
-  loadPokedex() {
-    this.pokedexService.getPokedex().subscribe(
-      (data: Pokedex) => {
-        this.pokedex = data;
-      }
-    );
+  backwardPokemon() {
+    this.service.idChave = this.pokemon.id;
+    if (this.service.idChave <= 0) {
+      this.service.idChave = this.service.idChave + 1;
+    } else {
+      this.service.idChave = this.service.idChave - 1;
+    }
+    this.service.getPokemonByID().subscribe({
+      next: (data) => {
+        this.pokemon = data;
+        this.pokemon.img = data.sprites.other.home.front_default;
+      },
+    });
   }
+
+  forwardPokemon() {
+    this.service.idChave = this.pokemon.id;
+    this.service.idChave = this.service.idChave + 1;
+    this.service.getPokemonByID().subscribe({
+      next: (data) => {
+        this.pokemon = data;
+        this.pokemon.img = data.sprites.other.home.front_default;
+      },
+    });
+  }
+
+  loadPokemon() {
+    this.service.getPokemonByID().subscribe({
+      next: (data) => {
+        this.pokemon = data;
+        this.pokemon.img = data.sprites.other.home.front_default;
+      },
+    });
+  }
+
+  getPokeId(): number {
+    return this.pokemon.id;
+  }
+
+  FixName() {
+    return this.pokemon.name.split("-");
+  }
+
 }

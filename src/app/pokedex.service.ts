@@ -1,19 +1,24 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Pokedex } from './pokedex';
+import { Pokemon } from './pokemon';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PokedexService {
+export class Pokedex {
+  url : string = "https://pokeapi.co/api/v2/pokemon/"
+  public idChave : number = 1;
+  public nomeChave : string = "";
+  //Injeção
+  constructor(private http:HttpClient) {}
 
-
-  constructor( private http: HttpClient ) {
-
-   }
-
-   getPokedex() : Observable<Pokedex> {
-    return this.http.get<Pokedex>("https://pokeapi.co/api/v2/pokemon-form/25")
-   }
+  getPokemonByID() : Observable<any>{
+      return this.http.get<any>(this.url+this.idChave)
+  }
+  getPokemon() : Observable<any>{
+    return this.http.get<any>(this.url+this.nomeChave)
 }
+}
+
+export { Pokemon };
